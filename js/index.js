@@ -164,7 +164,7 @@ function reset() {
 }
 
 //validation
-//hàm kiểm tra dữ liệu input
+//hàm kiểm tra dữ liệu input có trống hay không
 function isRequired(value) {
    if (!value) {
       return false;
@@ -172,6 +172,7 @@ function isRequired(value) {
    return true;
 }
 
+//hàm kiểm tra độ dài kí tự của input
 function suitableLength(value, minLength, maxLength) {
    if (value.length < minLength || value.length > maxLength) {
       return false;
@@ -179,6 +180,7 @@ function suitableLength(value, minLength, maxLength) {
    return true;
 }
 
+//hàm kiểm tra hợp lệ từng ô input
 function validation() {
    var account = document.getElementById("tknv").value;
    var fullName = document.getElementById("name").value;
