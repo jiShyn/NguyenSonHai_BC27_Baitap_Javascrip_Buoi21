@@ -11,7 +11,7 @@ function addStaff() {
    var position = document.getElementById("chucvu").value;
    var workingHours = +document.getElementById("gioLam").value;
 
-   var isValid = validation()
+   var isValid = validation();
    if (!isValid) {
       return;
    }
@@ -39,7 +39,7 @@ function update() {
    var accountCurrent = document.getElementById("tknv").value;
    var index = findStaff(accountCurrent);
 
-   var isValid = validation()
+   var isValid = validation();
    if (!isValid) {
       return;
    }
@@ -214,7 +214,9 @@ function validation() {
       document.getElementById("tbTKNV").innerHTML = "";
    }
 
-   var lettersFullName = new RegExp("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$");
+   var lettersFullName = new RegExp(
+      "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$"
+   );
    // var lettersFullName = /[^a-z0-9A-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễếệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]/u
    if (!isRequired(fullName)) {
       isValid = false;
@@ -267,11 +269,18 @@ function validation() {
       document.getElementById("tbMatKhau").innerHTML = "";
    }
 
+   var lettersDate = new RegExp(
+      "^([0]?[1-9]|[1][0-2])[./-]([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0-9]{4}|[0-9]{2})$"
+   );
    if (!isRequired(date)) {
       isValid = false;
       document.getElementById(
          "tbNgay"
       ).innerHTML = `Vui lòng chọn ngày vào làm.`;
+   } else if (!lettersDate.test(date)) {
+      isValid = false;
+      document.getElementById("tbNgay").innerHTML =
+         "Vui lòng nhập đúng định dạng (mm/dd/yyyy)";
    } else {
       document.getElementById("tbNgay").innerHTML = "";
    }
