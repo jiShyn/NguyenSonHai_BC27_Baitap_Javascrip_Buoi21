@@ -11,6 +11,11 @@ function addStaff() {
    var position = document.getElementById("chucvu").value;
    var workingHours = +document.getElementById("gioLam").value;
 
+   var isValid = validation()
+   if (!isValid) {
+      return;
+   }
+
    var staff = new Staff(
       account,
       fullName,
@@ -34,6 +39,11 @@ function update() {
    var accountCurrent = document.getElementById("tknv").value;
    var index = findStaff(accountCurrent);
 
+   var isValid = validation()
+   if (!isValid) {
+      return;
+   }
+
    staffs[index].fullName = document.getElementById("name").value;
    staffs[index].email = document.getElementById("email").value;
    staffs[index].password = document.getElementById("password").value;
@@ -49,15 +59,15 @@ function update() {
 
 //hàm này gắn ở nút search
 function findRankStaff() {
-	var newStaffs = []
+   var newStaffs = [];
    var searchNameEl = document.getElementById("searchName").value;
    for (var i = 0; i < staffs.length; i++) {
       if (staffs[i].getRank().toLowerCase() === searchNameEl.toLowerCase()) {
-				newStaffs.push(staffs[i])
+         newStaffs.push(staffs[i]);
       }
    }
 
-	 display(newStaffs)
+   display(newStaffs);
 }
 
 //hàm này gắn ở nút Cập nhật ở table
@@ -70,6 +80,8 @@ function reopenModal(accountStaff) {
    var salary = document.getElementById("luongCB");
    var position = document.getElementById("chucvu");
    var workingHours = document.getElementById("gioLam");
+
+   // document.getElementById('btnCapNhat').disabled = false
 
    var index = findStaff(accountStaff);
 
@@ -111,8 +123,8 @@ function display(staffs) {
 		 <td>${staff.position}</td>
 		 <td>${staff.getTotalSalary()}</td>
 		 <td>${staff.getRank()}</td>
-		 <td>
-				 <button class="btn btn-secondary mb-3" onclick ="reopenModal('${
+		 <td class="d-flex flex-wrap justify-content-center align-items-center">
+				 <button class="btn btn-secondary" onclick ="reopenModal('${
                 staff.account
              }')" data-toggle="modal"
 							data-target="#myModal">Cập nhật</button>
@@ -138,15 +150,167 @@ function findStaff(accountStaff) {
 
 //hàm reset form
 function reset() {
-   var account = (document.getElementById("tknv").value = "");
-   var fullName = (document.getElementById("name").value = "");
-   var email = (document.getElementById("email").value = "");
-   var password = (document.getElementById("password").value = "");
-   var date = (document.getElementById("datepicker").value = "");
-   var salary = (document.getElementById("luongCB").value = "");
-   var position = (document.getElementById("chucvu").value = "");
-   var workingHours = (document.getElementById("gioLam").value = "");
+   document.getElementById("tknv").value = "";
+   document.getElementById("name").value = "";
+   document.getElementById("email").value = "";
+   document.getElementById("password").value = "";
+   document.getElementById("datepicker").value = "";
+   document.getElementById("luongCB").value = "";
+   document.getElementById("chucvu").value = "";
+   document.getElementById("gioLam").value = "";
 
-   account.disabled = false;
+   document.getElementById("tknv").disabled = false;
    document.getElementById("btnThemNV").disabled = false;
+}
+
+//validation
+//hàm kiểm tra dữ liệu input
+function isRequired(value) {
+   if (!value) {
+      return false;
+   }
+   return true;
+}
+
+function suitableLength(value, minLength, maxLength) {
+   if (value.length < minLength || value.length > maxLength) {
+      return false;
+   }
+   return true;
+}
+
+function validation() {
+   var account = document.getElementById("tknv").value;
+   var fullName = document.getElementById("name").value;
+   var email = document.getElementById("email").value;
+   var password = document.getElementById("password").value;
+   var date = document.getElementById("datepicker").value;
+   var salary = document.getElementById("luongCB").value;
+   var position = document.getElementById("chucvu").value;
+   var workingHours = document.getElementById("gioLam").value;
+
+   document.getElementById("tbTKNV").style.display = "block";
+   document.getElementById("tbTen").style.display = "block";
+   document.getElementById("tbEmail").style.display = "block";
+   document.getElementById("tbMatKhau").style.display = "block";
+   document.getElementById("tbNgay").style.display = "block";
+   document.getElementById("tbLuongCB").style.display = "block";
+   document.getElementById("tbChucVu").style.display = "block";
+   document.getElementById("tbGiolam").style.display = "block";
+
+   var isValid = true;
+
+   if (!isRequired(account)) {
+      isValid = false;
+      document.getElementById(
+         "tbTKNV"
+      ).innerHTML = `Tên tài khoản không được để trống`;
+   } else if (!suitableLength(account, 4, 6)) {
+      isValid = false;
+      document.getElementById(
+         "tbTKNV"
+      ).innerHTML = `Tên tài khoản phải từ 4 - 6 kí tự`;
+   } else {
+      document.getElementById("tbTKNV").innerHTML = "";
+   }
+
+   var lettersFullName = new RegExp("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$");
+   // var lettersFullName = /[^a-z0-9A-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễếệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]/u
+   if (!isRequired(fullName)) {
+      isValid = false;
+      document.getElementById(
+         "tbTen"
+      ).innerHTML = `Họ và tên không được để trống`;
+   } else if (!lettersFullName.test(fullName)) {
+      isValid = false;
+      document.getElementById(
+         "tbTen"
+      ).innerHTML = `Họ và tên chỉ được nhập chữ không dấu`;
+   } else {
+      document.getElementById("tbTen").innerHTML = "";
+   }
+
+   var lettersEmail = new RegExp("[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$");
+   if (!isRequired(email)) {
+      isValid = false;
+      document.getElementById(
+         "tbEmail"
+      ).innerHTML = `Email không được để trống`;
+   } else if (!lettersEmail.test(email)) {
+      isValid = false;
+      document.getElementById(
+         "tbEmail"
+      ).innerHTML = `Email không đúng định dạng`;
+   } else {
+      document.getElementById("tbEmail").innerHTML = "";
+   }
+
+   var lettersPassword = new RegExp(
+      "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,10}$"
+   );
+   if (!isRequired(password)) {
+      isValid = false;
+      document.getElementById(
+         "tbMatKhau"
+      ).innerHTML = `Mật khẩu không được để trống`;
+   } else if (!suitableLength(password, 6, 10)) {
+      isValid = false;
+      document.getElementById(
+         "tbMatKhau"
+      ).innerHTML = `Mật khẩu phải từ 6 - 10 kí tự`;
+   } else if (!lettersPassword.test(password)) {
+      isValid = false;
+      document.getElementById(
+         "tbMatKhau"
+      ).innerHTML = `Mật khẩu bao gồm 6 - 10 kí tự, phải chứa ít nhất 1 kí tự số, 1 kí tự chữ in hoa, 1 kí tự đặc biệt `;
+   } else {
+      document.getElementById("tbMatKhau").innerHTML = "";
+   }
+
+   if (!isRequired(date)) {
+      isValid = false;
+      document.getElementById(
+         "tbNgay"
+      ).innerHTML = `Vui lòng chọn ngày vào làm.`;
+   } else {
+      document.getElementById("tbNgay").innerHTML = "";
+   }
+
+   if (!isRequired(salary)) {
+      isValid = false;
+      document.getElementById(
+         "tbLuongCB"
+      ).innerHTML = `Lương cơ bản không được để trống`;
+   } else if (+salary < 1000000 || +salary > 20000000) {
+      isValid = false;
+      document.getElementById(
+         "tbLuongCB"
+      ).innerHTML = `Vui lòng nhập lương cơ bản thích hợp (1 000 000 - 20 000 000)`;
+   } else {
+      document.getElementById("tbLuongCB").innerHTML = "";
+   }
+
+   if (!isRequired(position) || position === "Chọn chức vụ") {
+      isValid = false;
+      document.getElementById(
+         "tbChucVu"
+      ).innerHTML = `Vui lòng chọn chức vụ thích hợp.`;
+   } else {
+      document.getElementById("tbChucVu").innerHTML = "";
+   }
+
+   if (!isRequired(workingHours)) {
+      isValid = false;
+      document.getElementById(
+         "tbGiolam"
+      ).innerHTML = `Giờ làm không được để trống`;
+   } else if (+workingHours < 80 || +workingHours > 200) {
+      isValid = false;
+      document.getElementById(
+         "tbGiolam"
+      ).innerHTML = `Vui lòng nhập giờ làm thích hợp (80 - 200 giờ)`;
+   } else {
+      document.getElementById("tbGiolam").innerHTML = "";
+   }
+   return isValid;
 }
