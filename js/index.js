@@ -1,5 +1,28 @@
 var staffs = [];
 
+init();
+
+//hàm này tự động chạy khi load trình duyệt. Lấy dữ liệu ở localStorage lên hiển thị
+function init() {
+   staffs = JSON.parse(localStorage.getItem("staffs")) || [];
+   // console.log(staffs);
+
+   for (var i = 0; i < staffs.length; i++) {
+      staffs[i] = new Staff(
+         staffs[i].account,
+         staffs[i].fullName,
+         staffs[i].email,
+         staffs[i].password,
+         staffs[i].date,
+         staffs[i].salary,
+         staffs[i].position,
+         staffs[i].workingHours
+      );
+   }
+
+   display(staffs);
+}
+
 //hàm này gắn ở nút Thêm người dùng trong modal
 function addStaff() {
    var account = document.getElementById("tknv").value;
@@ -29,6 +52,8 @@ function addStaff() {
 
    staffs.push(staff);
 
+   localStorage.setItem("staffs", JSON.stringify(staffs));
+
    display(staffs);
 
    reset();
@@ -51,6 +76,8 @@ function update() {
    staffs[index].salary = document.getElementById("luongCB").value;
    staffs[index].position = document.getElementById("chucvu").value;
    staffs[index].workingHours = document.getElementById("gioLam").value;
+
+   localStorage.setItem("staffs", JSON.stringify(staffs));
 
    display(staffs);
 
@@ -104,6 +131,8 @@ function deleteStaff(accountStaff) {
    if (index !== -1) {
       staffs.splice(index, 1);
    }
+
+   localStorage.setItem("staffs", JSON.stringify(staffs));
 
    display(staffs);
 }
