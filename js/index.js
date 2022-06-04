@@ -143,7 +143,7 @@ function display(staffs) {
    var html = "";
    for (var i = 0; i < staffs.length; i++) {
       var staff = staffs[i];
-      html += `
+      html += /*html*/ `
 	 <tr>
 		 <td>${staff.account}</td>
 		 <td>${staff.fullName}</td>
@@ -231,6 +231,7 @@ function validation() {
 
    var isValid = true;
 
+   var letterAccount = /^[0-9]+$/;
    if (!isRequired(account)) {
       isValid = false;
       document.getElementById(
@@ -241,6 +242,11 @@ function validation() {
       document.getElementById(
          "tbTKNV"
       ).innerHTML = `Tên tài khoản phải từ 4 - 6 kí tự`;
+   } else if (!letterAccount.test(account)) {
+      isValid = false;
+      document.getElementById(
+         "tbTKNV"
+      ).innerHTML = `Tên tài khoản chỉ nhận kí tự số`;
    } else {
       document.getElementById("tbTKNV").innerHTML = "";
    }
@@ -248,7 +254,6 @@ function validation() {
    var lettersFullName = new RegExp(
       "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$"
    );
-   // var lettersFullName = /[^a-z0-9A-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễếệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]/u
    if (!isRequired(fullName)) {
       isValid = false;
       document.getElementById(
